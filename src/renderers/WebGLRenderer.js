@@ -33,6 +33,9 @@ THREE.WebGLRenderer = function ( parameters ) {
 	_viewportWidth = 0,
 	_viewportHeight = 0,
 
+  // lights cache
+  _oldSceneLights = [],
+
 	// camera matrices caches
 
 	_frustum = [
@@ -2655,8 +2658,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 	};
 
 	function setProgram( camera, lights, fog, material, object ) {
-
-		if ( ! material.program ) {
+		if ( ! material.program || _this._oldSceneLights != lights.length ) {
 
 			_this.initMaterial( material, lights, fog, object );
 
@@ -3865,6 +3867,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 		}
 
 		//_gl.finish();
+		_this._oldSceneLights = lights.length;
 
 	};
 
