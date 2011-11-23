@@ -11,6 +11,9 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 	var parameters = parameters || {},
 
+  // lights cache
+  _oldSceneLights = 0,
+
 	_canvas = parameters.canvas !== undefined ? parameters.canvas : document.createElement( 'canvas' ),
 
 	_precision = parameters.precision !== undefined ? parameters.precision : 'highp',
@@ -3205,6 +3208,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 		}
 
 		//_gl.finish();
+		_this._oldSceneLights = lights.length;
 
 	};
 
@@ -3580,7 +3584,6 @@ THREE.WebGLRenderer = function ( parameters ) {
 			}
 
 		}
-
 	};
 
 	function renderSprites ( scene, camera ) {
@@ -4300,7 +4303,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 
 	function setProgram ( camera, lights, fog, material, object ) {
 
-		if ( ! material.program ) {
+		if ( ! material.program || _this._oldSceneLights != lights.length ) {
 
 			_this.initMaterial( material, lights, fog, object );
 
